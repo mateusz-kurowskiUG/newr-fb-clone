@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(cuid())
+  Auth          Auth     @relation(fields: [auth_id], references: [id])
+  Country       Country  @relation(fields: [country_id], references: [id])
+  Profile       Profile  @relation(fields: [profile_id], references: [id])
+  auth_id       String   @unique
+  country_id    String
+  date_of_birth DateTime
+  deleted       Boolean  @default(false)
+  profile_id    String   @unique
+  type          UserType
+}
+
+model Country {
+  id          String @id @default(cuid())
+  flag_emoji  String
+  flag_svg    String
+  name_eng    String
+  name_pol    String
+  phone_code  String
+  language_id String
+  User        User[]
+}
+
+model Auth {
+  id         String   @id @default(cuid())
+  email      String // encrypted
+  password   String // hashed
+  updated_at DateTime @default(now())
+  created_at DateTime @default(now())
+  User       User?
+}
+
+model Profile {
+  id        String  @id @default(cuid())
+  Media     Media[]
+  User      User[]
+  bio       String
+  last_name String
+  name      String
+  user_id   String  @unique
+}
+
+model Media {
+  id         String    @id @default(cuid())
+  Profile    Profile   @relation(fields: [profile_id], references: [id])
+  created_at DateTime  @default(now())
+  profile_id String
+  type       MediaType
+  url        String
+}
+
+enum MediaType {
+  AVATAR
+  BACKGROUND
+}
+
+enum UserType {
+  ADMIN
+  USER
+  MOD
+}

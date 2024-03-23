@@ -1,0 +1,26 @@
+{
+  "name": "backend",
+  "version": "1.0.50",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "bun run --watch src/index.ts",
+    "migrate": "bunx prisma migrate dev"
+  },
+  "dependencies": {
+    "@prisma/client": "5.11.0",
+    "elysia": "latest",
+    "prettier-eslint": "^16.3.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "bun-types": "latest",
+    "eslint": "^8.0.1",
+    "eslint-config-love": "latest",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "prisma": "5.11.0",
+    "typescript": "*"
+  },
+  "module": "src/index.js"
+}
