@@ -9,7 +9,7 @@ const app = new Elysia()
   .onError(apiErrorHandler)
   .use(adminRouter)
   .use(countriesRouter)
-  .listen(3000)
+  .listen(5000)
 
 console.log(
   `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
