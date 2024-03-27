@@ -5,25 +5,36 @@ import type ICountry from '../models/ICountry'
 const getAllCountries = async (): Promise<ICountry[] | Error> =>
   await prisma.country
     .findMany()
-    .then((res) => res ?? [])
+    .then((res) => res)
     .catch((e) => new Error(DBMessage.NOT_AVAILABLE))
+
+const getContryById = async (id: string): Promise<ICountry | Error> =>
+  await prisma.country
+    .findUniqueOrThrow({ where: { id } })
+    .then((res) => res)
+    .catch((e) => {
+      if (e.code === 'P2025') return Error(DBMessage.DOES_NOT_EXIST)
+      throw new Error(DBMessage.NOT_AVAILABLE)
+    })
+
+const countryExists = async (id: string): Promise<boolean> =>
+  await getContryById(id)
+    .then(() => true)
+    .catch(() => false)
 
 const deleteCountry = async (id: string): Promise<ICountry | Error> =>
   await prisma.country
     .delete({ where: { id } })
     .then((country) => country)
     .catch((e) => {
-      if (e instanceof Error) {
-        if ('code' in e && e.code === 'P2025') {
-          return new Error(DBMessage.DOES_NOT_EXIST)
-        }
-        return e
-      }
-      return new Error(DBMessage.UNKNOWN_ERROR)
+      if (e.code === 'P2025') return Error(DBMessage.DOES_NOT_EXIST)
+      throw new Error(DBMessage.NOT_AVAILABLE)
     })
 
 export const Countries = {
   getAllCountries,
-  deleteCountry
+  deleteCountry,
+  getContryById,
+  countryExists
 }
 export default Countries
