@@ -8,6 +8,7 @@
     "db-setup": "bun run src/db-setup.ts"
   },
   "dependencies": {
+    "@elysiajs/cors": "^1.0.2",
     "@elysiajs/swagger": "^1.0.3",
     "@paralleldrive/cuid2": "^2.2.2",
     "@prisma/client": "5.11.0",
