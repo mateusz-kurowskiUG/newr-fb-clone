@@ -11,7 +11,9 @@ const countryColumns: ColumnDef<ICountry>[] = [
   {
     accessorKey: "index",
     meta: { hidden: false, accessorKey: "index", name: "Index" },
-    header: ({ column }) => <ThSortableItem column={column} text={"Index"} />,
+    header: ({ column }) => (
+      <ThSortableItem column={column} text={"Index"} disabled />
+    ),
     cell: ({ row }) => row.index + 1,
   },
   {
@@ -44,7 +46,7 @@ const countryColumns: ColumnDef<ICountry>[] = [
   },
   {
     accessorKey: "flag_alt",
-    meta: { hidden: true, accessorKey: "flag_alt", name: "Flag Alt" },
+    meta: { hidden: false, accessorKey: "flag_alt", name: "Flag Alt" },
     header: ({ column }) => (
       <ThSortableItem column={column} text={"Flag Alt"} />
     ),

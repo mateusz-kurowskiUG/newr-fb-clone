@@ -13,7 +13,7 @@ function CountryLayout() {
   if (!countries) return "No data";
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="container-sm py-10">
       <DataTable data={countries} columns={countryColumns} key={cuid} />;
     </div>
   );

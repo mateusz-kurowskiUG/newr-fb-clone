@@ -8,7 +8,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, ColumnFiltersState, Table } from "@tanstack/react-table";
 import React from "react";
 
 interface ICountriesColumnMeta {
@@ -20,15 +20,18 @@ interface ICountriesColumnMeta {
 function TableFilterSelector({
   columns,
   setFiltered,
+  table,
 }: {
   columns: ColumnDef<any>[];
   setFiltered: (value: string) => void;
+  table: Table<any>;
 }) {
   return (
     <div className="flex flex-col items-center gap-2">
       <Label>Filter by:</Label>
       <Select
         onValueChange={(val) => {
+          table.resetColumnFilters();
           setFiltered(val);
         }}
       >

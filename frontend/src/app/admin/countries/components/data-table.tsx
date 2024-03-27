@@ -57,6 +57,7 @@ export function DataTable<TData, TValue>({
     <div className="rounded-md border">
       <div className="flex justify-between p-2 items-center">
         <TableFilterSelector
+          table={table}
           setFiltered={setFilteredColumnName}
           columns={countryColumns}
         />
