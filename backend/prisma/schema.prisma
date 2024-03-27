@@ -27,15 +27,24 @@ model User {
 }
 
 model Country {
-  id          String @id @default(cuid())
-  flag_emoji  String
-  flag_svg    String
-  name_eng    String
-  name_pol    String
-  phone_code  String
-  language_id String
-  User        User[]
+  id              String @id @default(cuid())
+  flag_emoji      String?
+  flag_svg        String?
+  flag_alt        String?
+  name_eng        String
+  name_pol        String
+  phone_code_root String?
+  User            User[]
+  // language_id     String
+  // Language        Language @relation(fields: [language_id], references: [id])
 }
+
+// model Language {
+//   id        String    @id @default(cuid())
+//   lang_code String
+//   name      String
+//   Country   Country[]
+// }
 
 model Auth {
   id         String   @id @default(cuid())
