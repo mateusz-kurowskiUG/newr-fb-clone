@@ -27,7 +27,7 @@ model User {
 }
 
 model Country {
-  id              String @id @default(cuid())
+  id              String  @id @default(cuid())
   flag_emoji      String?
   flag_svg        String?
   flag_alt        String?
@@ -48,10 +48,11 @@ model Country {
 
 model Auth {
   id         String   @id @default(cuid())
-  email      String // encrypted
+  email      String   @unique
   password   String // hashed
   updated_at DateTime @default(now())
   created_at DateTime @default(now())
+  banned     Boolean  @default(false)
   User       User?
 }
 
