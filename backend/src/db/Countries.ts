@@ -2,29 +2,39 @@ import prisma from '../connect'
 import DBMessage from '../enums/DBMessage'
 import type ICountry from '../models/ICountry'
 
-class Countries {
-  public static async getAllCountries (): Promise<ICountry[] | Error> {
-    try {
-      const coutries = await prisma.country.findMany()
-      if (coutries === null) return []
-      return coutries
-    } catch (e) {
-      return new Error(DBMessage.NOT_AVAILABLE)
-    }
-  }
+const getAllCountries = async (): Promise<ICountry[] | Error> =>
+  await prisma.country
+    .findMany()
+    .then((res) => res)
+    .catch((e) => new Error(DBMessage.NOT_AVAILABLE))
 
-  public static async deleteCountry (id: string): Promise<ICountry | Error> {
-    try {
-      const country = await prisma.country.delete({ where: { id } })
-      return country
-    } catch (e) {
-      if (e instanceof Error) {
-        if ('code' in e && e.code === 'P2025') { return new Error(DBMessage.DOES_NOT_EXIST) }
-        return e
-      }
-      return new Error(DBMessage.UNKNOWN_ERROR)
-    }
-  }
+const getContryById = async (id: string): Promise<ICountry | Error> =>
+  await prisma.country
+    .findUniqueOrThrow({ where: { id } })
+    .then((res) => res)
+    .catch((e) => {
+      if (e.code === 'P2025') return Error(DBMessage.DOES_NOT_EXIST)
+      throw new Error(DBMessage.NOT_AVAILABLE)
+    })
+
+const countryExists = async (id: string): Promise<boolean> =>
+  await getContryById(id)
+    .then(() => true)
+    .catch(() => false)
+
+const deleteCountry = async (id: string): Promise<ICountry | Error> =>
+  await prisma.country
+    .delete({ where: { id } })
+    .then((country) => country)
+    .catch((e) => {
+      if (e.code === 'P2025') return Error(DBMessage.DOES_NOT_EXIST)
+      throw new Error(DBMessage.NOT_AVAILABLE)
+    })
+
+export const Countries = {
+  getAllCountries,
+  deleteCountry,
+  getContryById,
+  countryExists
 }
-
 export default Countries
