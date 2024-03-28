@@ -2,8 +2,8 @@ import type IAuthBody from './IAuthBody'
 
 interface IUserAuth {
   id: string
-  updated_at: Date
-  created_at: Date
+  updatedAt: Date
+  createdAt: Date
 }
 type TUserAuth = IUserAuth & IAuthBody
 export default TUserAuth

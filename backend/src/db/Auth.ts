@@ -3,8 +3,8 @@ import prisma from '../connect'
 import type IAuthBody from '../models/auth/IAuthBody'
 
 const registerUser = async ({
-  country_id,
-  date_of_birth,
+  countryId,
+  dateOfBirth,
   email,
   password
 }: IAuthBody): Promise<boolean> =>

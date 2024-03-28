@@ -1,7 +1,7 @@
 interface IAuthBody {
   email: string
   password: string
-  country_id: string
-  date_of_birth: Date
+  countryId: string
+  dateOfBirth: Date
 }
 export default IAuthBody
