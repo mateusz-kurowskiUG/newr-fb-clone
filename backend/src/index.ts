@@ -4,12 +4,14 @@ import countriesRouter from './routes/countries.routes'
 import apiErrorHandler from './handlers/api-error-handler'
 import swagger from '@elysiajs/swagger'
 import cors from '@elysiajs/cors'
+import authRouter from './routes/auth.routes'
 
-const app = new Elysia()
+const app = new Elysia({ prefix: '/api' })
   .use(swagger())
   .use(cors())
   .onError(apiErrorHandler)
   .use(adminRouter)
+  .use(authRouter)
   .use(countriesRouter)
   .listen(5000)
 

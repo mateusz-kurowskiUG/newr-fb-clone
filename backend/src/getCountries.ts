@@ -41,13 +41,13 @@ const prepareCountry = (country: ICountryExternal): ICountry => {
   const { flag, flags, idd, name, translations } = country
   return {
     id: cuid2.createId(),
-    flag_alt: flags.alt || null,
-    flag_svg: flags.svg || null,
-    flag_emoji: flag || null,
+    flagAlt: flags.alt || null,
+    flagSvg: flags.svg || null,
+    flagEmoji: flag || null,
     // language_id: '1',
-    name_eng: name.common,
-    name_pol: translations.pol.common,
-    phone_code_root: idd.root || null
+    nameEng: name.common,
+    namePol: translations.pol.common,
+    phoneCodeRoot: idd.root || null
   }
 }
 

@@ -14,27 +14,28 @@ datasource db {
 }
 
 model User {
-  id            String   @id @default(cuid())
-  Auth          Auth     @relation(fields: [auth_id], references: [id])
-  Country       Country  @relation(fields: [country_id], references: [id])
-  Profile       Profile  @relation(fields: [profile_id], references: [id])
-  auth_id       String   @unique
-  country_id    String
-  date_of_birth DateTime
-  deleted       Boolean  @default(false)
-  profile_id    String   @unique
-  type          UserType
+  id          String   @id @default(cuid())
+  Auth        Auth     @relation(fields: [authId], references: [id])
+  Country     Country  @relation(fields: [countryId], references: [id])
+  Profile     Profile  @relation(fields: [profileId], references: [id])
+  authId      String   @unique @map("auth_id")
+  countryId   String   @map("country_id")
+  dateOfBirth DateTime @map("date_of_birth")
+  deleted     Boolean  @default(false)
+  profileId   String   @unique @map("profile_id")
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at")
+  type        UserType
 }
 
 model Country {
-  id              String @id @default(cuid())
-  flag_emoji      String?
-  flag_svg        String?
-  flag_alt        String?
-  name_eng        String
-  name_pol        String
-  phone_code_root String?
-  User            User[]
+  id            String  @id @default(cuid())
+  flagEmoji     String? @map("flag_emoji")
+  flagSvg       String? @map("flag_svg")
+  flagAlt       String? @map("flag_alt")
+  nameEng       String  @map("name_eng")
+  namePol       String  @map("name_pol")
+  phoneCodeRoot String? @map("phone_code_root")
+  User          User[]
   // language_id     String
   // Language        Language @relation(fields: [language_id], references: [id])
 }
@@ -47,31 +48,32 @@ model Country {
 // }
 
 model Auth {
-  id         String   @id @default(cuid())
-  email      String // encrypted
-  password   String // hashed
-  updated_at DateTime @default(now())
-  created_at DateTime @default(now())
-  User       User?
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String // hashed
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  banned    Boolean  @default(false)
+  User      User?
 }
 
 model Profile {
-  id        String  @id @default(cuid())
-  Media     Media[]
-  User      User[]
-  bio       String
-  last_name String
-  name      String
-  user_id   String  @unique
+  id       String  @id @default(cuid())
+  Media    Media[]
+  User     User[]
+  bio      String
+  lastName String  @map("last_name")
+  name     String
+  userId   String  @unique @map("user_id")
 }
 
 model Media {
-  id         String    @id @default(cuid())
-  Profile    Profile   @relation(fields: [profile_id], references: [id])
-  created_at DateTime  @default(now())
-  profile_id String
-  type       MediaType
-  url        String
+  id        String    @id @default(cuid())
+  Profile   Profile   @relation(fields: [profileId], references: [id])
+  createdAt DateTime  @default(now()) @map("created_at")
+  profileId String    @map("profile_id")
+  type      MediaType
+  url       String
 }
 
 enum MediaType {
