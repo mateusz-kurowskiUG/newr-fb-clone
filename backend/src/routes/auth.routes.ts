@@ -4,7 +4,7 @@ import loginDTO from './dto/loginDTO'
 import Auth from '../db/Auth'
 import Countries from '../db/Countries'
 // TODO: ADD RESPONSES TO VALIDATION
-const authRouter = new Elysia({ prefix: '/auth' }).onError(
+const authRouter = new Elysia({ prefix: '/auth', name: 'Auth' }).onError(
   ({ code, error, set }) => {
     if (code === 'VALIDATION') {
       set.status = 400
@@ -22,14 +22,14 @@ authRouter.post(
       set.status = 400
       return new Error('Email already exists')
     }
-    const ifCountryExists = await Countries.countryExists(body.country_id)
+    const ifCountryExists = await Countries.countryExists(body.countryId)
     if (!ifCountryExists) {
       set.status = 400
       return new Error('Country does not exist')
     }
 
     const ifPermittedToRegister =
-      new Date().getFullYear() - body.date_of_birth.getFullYear() >= 13
+      new Date().getFullYear() - body.dateOfBirth.getFullYear() >= 13
 
     if (!ifPermittedToRegister) {
       set.status = 400
@@ -42,8 +42,8 @@ authRouter.post(
   {
     body: registerDTO,
     transform ({ body }) {
-      const date = new Date(body.date_of_birth)
-      body.date_of_birth = date
+      const date = new Date(body.dateOfBirth)
+      body.dateOfBirth = date
     }
   }
 )

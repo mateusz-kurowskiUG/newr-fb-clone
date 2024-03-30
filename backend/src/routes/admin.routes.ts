@@ -1,7 +1,7 @@
 import Elysia from 'elysia'
 import prisma from '../connect'
 
-const adminRouter = new Elysia({ name: 'admin', prefix: '/admin' })
+const adminRouter = new Elysia({ name: 'Admin', prefix: '/admin' })
 
 adminRouter.get('/media', async ({ set }) => {
   try {

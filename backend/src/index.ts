@@ -7,7 +7,17 @@ import cors from '@elysiajs/cors'
 import authRouter from './routes/auth.routes'
 
 const app = new Elysia({ prefix: '/api' })
-  .use(swagger())
+  .use(
+    swagger({
+      documentation: {
+        tags: [
+          { name: 'Admin', description: 'Admin operations' },
+          { name: 'Auth', description: 'Auth operations' },
+          { name: 'Countries', description: 'Countries operations' }
+        ]
+      }
+    })
+  )
   .use(cors())
   .onError(apiErrorHandler)
   .use(adminRouter)
