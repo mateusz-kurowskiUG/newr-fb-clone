@@ -31,10 +31,23 @@ const deleteCountry = async (id: string): Promise<ICountry | Error> =>
       throw new Error(DBMessage.NOT_AVAILABLE)
     })
 
+const updateContry = async (
+  id: string,
+  data: ICountry
+): Promise<ICountry | Error> =>
+  await prisma.country
+    .update({ where: { id }, data })
+    .then((res) => res)
+    .catch((e) => {
+      if (e.code === 'P2025') return Error(DBMessage.DOES_NOT_EXIST)
+      throw new Error(DBMessage.NOT_AVAILABLE)
+    })
+
 export const Countries = {
   getAllCountries,
   deleteCountry,
   getContryById,
-  countryExists
+  countryExists,
+  updateContry
 }
 export default Countries

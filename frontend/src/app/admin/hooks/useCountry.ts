@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 const useCountries = () => {
-    const fetchCountries = async () => axios.get("http://localhost:5000/countries").then((res) => res.data)
+    const fetchCountries = async () => axios.get("http://localhost:5000/api/countries").then((res) => res.data)
     return useQuery<ICountry[],Error>({queryKey:["countries",{completed:true}], queryFn: fetchCountries})
 };
 
