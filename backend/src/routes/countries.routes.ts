@@ -1,4 +1,4 @@
-import { Elysia, t } from 'elysia'
+import { Elysia, error, t } from 'elysia'
 import Countries from '../db/Countries'
 import cuid2 from '@paralleldrive/cuid2'
 import DBMessage from '../enums/DBMessage'
@@ -8,14 +8,10 @@ const countriesRouter = new Elysia({ name: 'Countries', prefix: '/countries' })
 
 countriesRouter.get(
   '/',
-  async ({ set }) => {
-    const countries = await Countries.getAllCountries()
-    if (countries instanceof Error) {
-      set.status = 500
-      throw countries
-    }
-    return countries
-  },
+  async ({ set, error }) =>
+    await Countries.getAllCountries()
+      .then((countries) => countries)
+      .catch((e) => error(500, { error: e.message })),
   {
     detail: {
       tags: ['Countries'],
@@ -31,16 +27,10 @@ countriesRouter.delete(
   '/:id',
   async ({ params, set }) => {
     const isCuid = cuid2.isCuid(params.id)
-    if (!isCuid) {
-      set.status = 400
-      throw new Error(DBMessage.INVALID_ARGUMENT)
-    }
+    if (!isCuid) return error(400, { error: DBMessage.INVALID_ARGUMENT })
 
     const country = await Countries.deleteCountry(params.id)
-    if (country instanceof Error) {
-      set.status = 500
-      throw country
-    }
+    if (country instanceof Error) return error(500, { error: country.message })
 
     return country
   },
@@ -59,15 +49,14 @@ countriesRouter.delete(
 countriesRouter.put(
   '/:id',
   async ({ params, body, set }) => {
-    const country = await Countries.updateContry(params.id, {
+    if (!cuid2.isCuid(params.id)) { return error(400, { error: DBMessage.INVALID_ARGUMENT }) }
+
+    await Countries.updateContry(params.id, {
       id: params.id,
       ...body
     })
-    if (country instanceof Error) {
-      set.status = 500
-      throw country
-    }
-    return country
+      .then((country) => country)
+      .catch((e) => error(500, { error: e.message }))
   },
   {
     params: t.Object({ id: t.String({ minLength: 24, maxLength: 24 }) }),

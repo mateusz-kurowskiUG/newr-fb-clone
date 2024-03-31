@@ -23,6 +23,7 @@ const app = new Elysia({ prefix: '/api' })
   .use(adminRouter)
   .use(authRouter)
   .use(countriesRouter)
+  .all('*', ({ error }) => error(404, 'Route not found'))
   .listen(5000)
 
 console.log(

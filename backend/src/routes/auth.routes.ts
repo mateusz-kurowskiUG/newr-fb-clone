@@ -16,24 +16,19 @@ const authRouter = new Elysia({ prefix: '/auth', name: 'Auth' }).onError(
 
 authRouter.post(
   '/register',
-  async ({ body, set }) => {
+  async ({ body, set, error }) => {
     const ifEmailExists = await Auth.emailExists(body.email)
-    if (ifEmailExists) {
-      set.status = 400
-      return new Error('Email already exists')
-    }
+    if (ifEmailExists) return error(400, { error: 'Email already exists' })
     const ifCountryExists = await Countries.countryExists(body.countryId)
     if (!ifCountryExists) {
-      set.status = 400
-      return new Error('Country does not exist')
+      return error(400, { error: 'Country does not exist' })
     }
 
     const ifPermittedToRegister =
       new Date().getFullYear() - body.dateOfBirth.getFullYear() >= 13
 
     if (!ifPermittedToRegister) {
-      set.status = 400
-      return new Error('User must be at least 13 years old')
+      return error(400, { error: 'You must be at least 13 years old' })
     }
 
     const userCreated = await Auth.registerUser(body)
