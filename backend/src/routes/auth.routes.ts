@@ -16,7 +16,7 @@ const authRouter = new Elysia({ prefix: '/auth', name: 'Auth' }).onError(
 
 authRouter.post(
   '/register',
-  async ({ body, set, error }) => {
+  async ({ body, error }) => {
     const ifEmailExists = await Auth.emailExists(body.email)
     if (ifEmailExists) return error(400, { error: 'Email already exists' })
     const ifCountryExists = await Countries.countryExists(body.countryId)

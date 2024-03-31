@@ -16,7 +16,7 @@ adminRouter.get(
     await prisma.country
       .findMany()
       .then((countries) => countries)
-      .catch((e) => error(500, { error: e.message }))
+      .catch((e) => error(500, { error: e.message ?? 'Internal server error' }))
 )
 
 export default adminRouter

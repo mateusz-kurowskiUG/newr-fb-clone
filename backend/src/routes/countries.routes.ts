@@ -8,10 +8,12 @@ const countriesRouter = new Elysia({ name: 'Countries', prefix: '/countries' })
 
 countriesRouter.get(
   '/',
-  async ({ set, error }) =>
+  async ({ error }) =>
     await Countries.getAllCountries()
       .then((countries) => countries)
-      .catch((e) => error(500, { error: e.message })),
+      .catch((e) =>
+        error(500, { error: e.message ?? 'Internal server error' })
+      ),
   {
     detail: {
       tags: ['Countries'],
@@ -25,12 +27,12 @@ countriesRouter.get(
 
 countriesRouter.delete(
   '/:id',
-  async ({ params, set }) => {
-    const isCuid = cuid2.isCuid(params.id)
+  async ({ params: { id } }) => {
+    const isCuid = cuid2.isCuid(id)
     if (!isCuid) return error(400, { error: DBMessage.INVALID_ARGUMENT })
 
-    const country = await Countries.deleteCountry(params.id)
-    if (country instanceof Error) return error(500, { error: country.message })
+    const country = await Countries.deleteCountry(id)
+    if (country instanceof Error) { return error(500, { error: country.message ?? 'Internal server error' }) }
 
     return country
   },
@@ -49,7 +51,9 @@ countriesRouter.delete(
 countriesRouter.put(
   '/:id',
   async ({ params, body, set }) => {
-    if (!cuid2.isCuid(params.id)) { return error(400, { error: DBMessage.INVALID_ARGUMENT }) }
+    if (!cuid2.isCuid(params.id)) {
+      return error(400, { error: DBMessage.INVALID_ARGUMENT })
+    }
 
     await Countries.updateContry(params.id, {
       id: params.id,
