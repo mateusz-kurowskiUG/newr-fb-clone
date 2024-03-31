@@ -32,7 +32,9 @@ countriesRouter.delete(
     if (!isCuid) return error(400, { error: DBMessage.INVALID_ARGUMENT })
 
     const country = await Countries.deleteCountry(id)
-    if (country instanceof Error) { return error(500, { error: country.message ?? 'Internal server error' }) }
+    if (country instanceof Error) {
+      return error(500, { error: country.message ?? 'Internal server error' })
+    }
 
     return country
   },
@@ -48,9 +50,10 @@ countriesRouter.delete(
     }
   }
 )
-countriesRouter.put(
+
+countriesRouter.patch(
   '/:id',
-  async ({ params, body, set }) => {
+  async ({ params, body }) => {
     if (!cuid2.isCuid(params.id)) {
       return error(400, { error: DBMessage.INVALID_ARGUMENT })
     }
