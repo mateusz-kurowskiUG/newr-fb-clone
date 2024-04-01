@@ -13,6 +13,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Admin {
+  id        String   @id @default(cuid())
+  Auth      Auth     @relation(fields: [authId], references: [id])
+  authId    String   @unique @map("auth_id")
+}
+
 model User {
   id          String   @id @default(cuid())
   Auth        Auth     @relation(fields: [authId], references: [id])
@@ -55,6 +61,7 @@ model Auth {
   createdAt DateTime @default(now()) @map("created_at")
   banned    Boolean  @default(false)
   User      User?
+  Admin     Admin?
 }
 
 model Profile {
