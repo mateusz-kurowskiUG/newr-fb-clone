@@ -4,8 +4,10 @@ import cuid2 from '@paralleldrive/cuid2'
 import DBMessage from '../enums/DBMessage'
 import updateCountryDTO from './dto/updateCountryDTO'
 
-const countriesRouter = new Elysia({ name: 'Countries', prefix: '/countries' })
-
+const countriesRouter = new Elysia({
+  name: 'Countries',
+  prefix: '/countries'
+})
 countriesRouter.get(
   '/',
   async ({ error }) =>
@@ -92,5 +94,6 @@ countriesRouter.patch(
     }
   }
 )
+export type CountriesRouter = typeof countriesRouter
 
 export default countriesRouter

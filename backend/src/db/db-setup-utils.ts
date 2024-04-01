@@ -18,6 +18,6 @@ export const truncateAll = async (): Promise<boolean> => {
     user.deleteMany()
   ]
   const res = await Promise.all(promisesTable)
-  if (res.every((r) => r.count === 0)) return false
+  if (res.every((r) => r.count === 0)) { throw new Error('Error truncating tables') }
   return true
 }

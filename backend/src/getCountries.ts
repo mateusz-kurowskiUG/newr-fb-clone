@@ -51,14 +51,12 @@ const prepareCountry = (country: ICountryExternal): ICountry => {
   }
 }
 
-const insertCountries = async (): Promise<boolean> => {
-  const res = await prisma.country.createMany({ data: await getCountries() })
-  if (res.count !== 0) {
-    console.log(`Inserted ${res.count} countries`)
-    return true
-  }
-  console.log('No countries inserted')
-  return false
-}
+const insertCountries = async (): Promise<boolean> =>
+  await prisma.country
+    .createMany({ data: await getCountries() })
+    .then(() => true)
+    .catch(() => {
+      throw new Error('Error inserting countries')
+    })
 
 export default insertCountries
