@@ -2,18 +2,20 @@ import prisma from '../connect'
 import DBMessage from '../enums/DBMessage'
 import type ICountry from '../models/ICountry'
 
-const getAllCountries = async (): Promise<ICountry[] | Error> =>
+const getAllCountries = async (): Promise<ICountry[]> =>
   await prisma.country
     .findMany()
     .then((res) => res)
-    .catch((e) => new Error(DBMessage.NOT_AVAILABLE))
+    .catch((e) => {
+      throw new Error(DBMessage.NOT_AVAILABLE)
+    })
 
-const getContryById = async (id: string): Promise<ICountry | Error> =>
+const getContryById = async (id: string): Promise<ICountry> =>
   await prisma.country
     .findUniqueOrThrow({ where: { id } })
     .then((res) => res)
     .catch((e) => {
-      if (e.code === 'P2025') return Error(DBMessage.DOES_NOT_EXIST)
+      if (e.code === 'P2025') throw new Error(DBMessage.DOES_NOT_EXIST)
       throw new Error(DBMessage.NOT_AVAILABLE)
     })
 
@@ -27,19 +29,16 @@ const deleteCountry = async (id: string): Promise<ICountry | Error> =>
     .delete({ where: { id } })
     .then((country) => country)
     .catch((e) => {
-      if (e.code === 'P2025') return Error(DBMessage.DOES_NOT_EXIST)
+      if (e.code === 'P2025') throw new Error(DBMessage.DOES_NOT_EXIST)
       throw new Error(DBMessage.NOT_AVAILABLE)
     })
 
-const updateContry = async (
-  id: string,
-  data: ICountry
-): Promise<ICountry | Error> =>
+const updateContry = async (id: string, data: ICountry): Promise<ICountry> =>
   await prisma.country
     .update({ where: { id }, data })
     .then((res) => res)
     .catch((e) => {
-      if (e.code === 'P2025') return Error(DBMessage.DOES_NOT_EXIST)
+      if (e.code === 'P2025') throw new Error(DBMessage.DOES_NOT_EXIST)
       throw new Error(DBMessage.NOT_AVAILABLE)
     })
 

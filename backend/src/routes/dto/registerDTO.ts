@@ -16,14 +16,14 @@ const registerDTO = t.Object(
       description:
         'Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character.'
     }),
-    country_id: t.String({
+    countryId: t.String({
       examples: ['irphik0odshgnfwlrudwnxjm'],
       description: 'The country ID of the user. CUID2 format.',
       error: 'Country ID does not meet requirements.',
       minLength: 24,
       maxLength: 24
     }),
-    date_of_birth: t.Date({
+    dateOfBirth: t.Date({
       error: 'Date of birth must be in YYYY-MM-DD format.',
       examples: ['2000-01-01'],
       description:
@@ -38,8 +38,8 @@ const registerDTO = t.Object(
       {
         email: 'admin@admin.com',
         password: 'Admin123.',
-        country_id: 'irphik0odshgnfwlrudwnxjm',
-        date_of_birth: '2000-01-01'
+        countryId: 'irphik0odshgnfwlrudwnxjm',
+        dateOfBirth: '2000-01-01'
       }
     ],
     default: { email: '', password: '' }
