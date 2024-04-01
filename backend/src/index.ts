@@ -8,6 +8,9 @@ import authRouter from './routes/auth.routes'
 import cron from '@elysiajs/cron'
 
 const app = new Elysia({ prefix: '/api' })
+  .use(adminRouter)
+  .use(authRouter)
+  .use(countriesRouter)
   .use(
     swagger({
       documentation: {
@@ -30,9 +33,6 @@ const app = new Elysia({ prefix: '/api' })
   )
   .use(cors())
   .onError(apiErrorHandler)
-  .use(adminRouter)
-  .use(authRouter)
-  .use(countriesRouter)
   .all('*', ({ error }) => error(404, 'Route not found'))
   .listen(5000)
 
