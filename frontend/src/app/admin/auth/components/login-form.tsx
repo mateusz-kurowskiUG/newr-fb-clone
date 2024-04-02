@@ -9,7 +9,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import React, { useState } from "react";
+import React from "react";
 import useLoginForm from "../../hooks/useLoginForm";
 import { z } from "zod";
 import loginFormSchema from "../schema/login-form-schema";
@@ -22,38 +22,39 @@ import { Toaster } from "@/components/ui/toaster";
 // interface message with type
 function LoginForm() {
   const form = useLoginForm();
-  const { setLoggedIn } = useLoginStore();
   const { toast } = useToast();
-  const onSubmit = async (values: z.infer<typeof loginFormSchema>) => {
-    try {
-      const response = await adminAxios.post("login/", values);
-      toast({
-        variant: "success",
-        title: "Login successful.",
-        description: "You will be redirected soon.",
-      });
-      setTimeout(() => {
-        console.log("redirecting");
-      }, 1000);
-      // check cookies
-      // setLoggedIn(true);
-    } catch (e) {
-      if (e.response.status === 401) {
-        toast({
-          variant: "destructive",
-          title: "Invalid credentials!",
-          action: <ToastAction altText="Try again">Try again</ToastAction>,
-        });
-      } else {
-        toast({
-          variant: "destructive",
-          title: "Some other error occured!",
-          action: <ToastAction altText="Try again">Try again</ToastAction>,
-        });
-      }
-    }
-  };
+  const { setLoggedIn } = useLoginStore();
 
+  const onSubmit = async (values: z.infer<typeof loginFormSchema>) => {
+    await adminAxios
+      .post("login/", values)
+      .then(() => {
+        toast({
+          variant: "success",
+          title: "Login successful.",
+          description: "You will be redirected soon.",
+        });
+        setTimeout(() => {
+          setLoggedIn(true);
+        }, 2000);
+      })
+      .catch((e) => {
+        form.reset({ email: values.email, password: "" });
+        if (e.response.status === 401) {
+          toast({
+            variant: "destructive",
+            title: "Invalid credentials!",
+            action: <ToastAction altText="Try again">Try again</ToastAction>,
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Some other error occured!",
+            action: <ToastAction altText="Try again">Try again</ToastAction>,
+          });
+        }
+      });
+  };
   return (
     <>
       <Form {...form}>

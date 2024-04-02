@@ -11,15 +11,23 @@ import cookie from '@elysiajs/cookie'
 
 const adminRouter = new Elysia({ name: 'Admin', prefix: '/admin' })
   .use(cookie())
-  .use(jwt({ name: 'JWT', secret: process.env.JWT_SECRET ?? 'secret' }))
+  .use(
+    jwt({ name: 'JWT', secret: process.env.JWT_SECRET ?? 'secret', exp: '15m' })
+  )
   .post(
     '/login',
-    async ({ body: { email, password }, JWT, cookie: { name } }) =>
+    async ({ body: { email, password }, JWT, cookie: { token } }) =>
       await Admin.login(email, password)
         .then(async (res) => {
-          const token = await JWT.sign({ email, admin: 'true' })
-          name.value = token
-          name.httpOnly = true
+          console.log(token)
+
+          const signedToken = await JWT.sign({
+            email,
+            admin: 'true'
+          })
+          token.value = signedToken
+          token.httpOnly = true
+          token.maxAge = 60 * 60 * 24 * 7
           return { message: 'Logged in' }
         })
         .catch((e) => error(401, { error: e.message })),
@@ -30,8 +38,8 @@ const adminRouter = new Elysia({ name: 'Admin', prefix: '/admin' })
       })
     }
   )
-  .onBeforeHandle(async ({ JWT, cookie: { name }, error }) => {
-    const resolved = await JWT.verify(name.value)
+  .onBeforeHandle(async ({ JWT, cookie: { token }, error }) => {
+    const resolved = await JWT.verify(token.value)
     if (!resolved) return error(401, { error: 'Unauthorized' })
     if (!resolved.admin) return error(403, { error: 'Forbidden' })
     console.log(resolved)

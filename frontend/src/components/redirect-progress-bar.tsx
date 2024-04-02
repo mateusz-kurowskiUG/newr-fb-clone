@@ -6,7 +6,7 @@ function RedirectProgressBar() {
   const [progress, setProgress] = useState(0);
   React.useEffect(() => {
     const timer = setInterval(
-      () => setProgress((progress) => Math.min(progress + 10, 100)),
+      () => setProgress((progress) => Math.min(progress + 7, 100)),
       100,
     );
     return () => clearInterval(timer);
