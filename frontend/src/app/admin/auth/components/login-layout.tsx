@@ -10,7 +10,7 @@ function LoginLayout() {
   if (loggedIn) router.push("/admin");
   return (
     <>
-      <h1 className="text-3xl text-center my-5">Log In</h1>
+      <h1 className="text-3xl text-center my-10">Log In</h1>
       <LoginForm />
     </>
   );
