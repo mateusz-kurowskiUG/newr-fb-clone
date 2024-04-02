@@ -7,7 +7,7 @@ import LoginForm from "./login-form";
 function LoginLayout() {
   const router = useRouter();
   const { loggedIn } = useLoginStore();
-  if (loggedIn) {
+  if (loggedIn || localStorage.getItem("loggedIn") === "true") {
     router.push("/admin");
   }
 

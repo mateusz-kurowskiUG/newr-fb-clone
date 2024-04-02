@@ -34,6 +34,7 @@ function LoginForm() {
           title: "Login successful.",
           description: "You will be redirected soon.",
         });
+        localStorage.setItem("loggedIn", "true");
         setTimeout(() => {
           setLoggedIn(true);
         }, 2000);

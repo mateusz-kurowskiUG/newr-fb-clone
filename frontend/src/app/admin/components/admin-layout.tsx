@@ -7,7 +7,8 @@ function AdminLayout() {
   const router = useRouter();
   const { loggedIn } = useLoginStore();
 
-  if (!loggedIn) router.push("/admin/auth");
+  if (!loggedIn && localStorage.getItem("loggedIn") !== "true")
+    router.push("/admin/auth");
 
   return <div>Admin layout</div>;
 }

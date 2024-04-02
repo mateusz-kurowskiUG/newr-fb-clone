@@ -12,7 +12,11 @@ import cookie from '@elysiajs/cookie'
 const adminRouter = new Elysia({ name: 'Admin', prefix: '/admin' })
   .use(cookie())
   .use(
-    jwt({ name: 'JWT', secret: process.env.JWT_SECRET ?? 'secret', exp: '15m' })
+    jwt({
+      name: 'JWT',
+      secret: process.env.JWT_SECRET ?? 'secret',
+      exp: '15m'
+    })
   )
   .post(
     '/login',
@@ -27,7 +31,6 @@ const adminRouter = new Elysia({ name: 'Admin', prefix: '/admin' })
           })
           token.value = signedToken
           token.httpOnly = true
-          token.maxAge = 60 * 60 * 24 * 7
           return { message: 'Logged in' }
         })
         .catch((e) => error(401, { error: e.message })),
