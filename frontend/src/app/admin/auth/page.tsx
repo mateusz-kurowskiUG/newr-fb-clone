@@ -1,7 +1,9 @@
+"use client";
 import React from "react";
+import LoginLayout from "./components/login-layout";
 
-function page() {
-  return <div>page</div>;
+function Page() {
+  return <LoginLayout />;
 }
 
-export default page;
+export default Page;

@@ -1,7 +1,7 @@
 import React from "react";
-
-function page() {
-  return 1;
+import AdminLayout from "./components/admin-layout";
+function Page() {
+  return <AdminLayout />;
 }
 
-export default page;
+export default Page;
