@@ -8,6 +8,13 @@ import authRouter from './routes/auth.routes'
 import cron from '@elysiajs/cron'
 
 const app = new Elysia({ prefix: '/api' })
+  .use(
+    cors({
+      credentials: true,
+      origin: 'localhost:3000',
+      allowedHeaders: ['Content-Type', 'Authorization']
+    })
+  )
   .use(adminRouter)
   .use(authRouter)
   .use(countriesRouter)
@@ -31,7 +38,6 @@ const app = new Elysia({ prefix: '/api' })
       }
     })
   )
-  .use(cors())
   .onError(apiErrorHandler)
   .all('*', ({ error }) => error(404, 'Route not found'))
   .listen(5000)

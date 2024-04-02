@@ -8,7 +8,12 @@ function LoginLayout() {
   const router = useRouter();
   const { loggedIn } = useLoginStore();
   if (loggedIn) router.push("/admin");
-  return <LoginForm />;
+  return (
+    <>
+      <h1 className="text-3xl text-center my-5">Log In</h1>
+      <LoginForm />
+    </>
+  );
 }
 
 export default LoginLayout;

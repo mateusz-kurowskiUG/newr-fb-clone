@@ -5,10 +5,11 @@ const login = async (email: string, password: string): Promise<boolean> => {
     include: {
       Auth: true
     },
-    where: { Auth: { email, password } }
+    where: { Auth: { email } }
   })
-  if (!check) throw new Error('Invalid email or password')
-  //   jwt here
+  if (!check) throw new Error('User not found')
+  if (check.Auth.password !== password) { throw new Error('Incorrect email or password') }
+
   return true
 }
 

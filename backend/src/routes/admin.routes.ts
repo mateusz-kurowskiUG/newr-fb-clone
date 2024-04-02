@@ -22,7 +22,7 @@ const adminRouter = new Elysia({ name: 'Admin', prefix: '/admin' })
           name.httpOnly = true
           return { message: 'Logged in' }
         })
-        .catch((e) => error(500, { error: e.message })),
+        .catch((e) => error(401, { error: e.message })),
     {
       body: t.Object({
         email: t.String({ format: 'email' }),
