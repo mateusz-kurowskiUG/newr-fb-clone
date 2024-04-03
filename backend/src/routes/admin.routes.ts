@@ -1,51 +1,63 @@
-import Elysia, { error, t } from 'elysia'
+import Elysia, { error } from 'elysia'
 import prisma from '../connect'
 import cuid2 from '@paralleldrive/cuid2'
 import DBMessage from '../enums/DBMessage'
 import { type ICountryOptional } from '../models/ICountry'
 import Countries from '../db/Countries'
-import updateCountryDTO from './dto/updateCountryDTO'
 import Admin from '../db/Admin'
 import jwt from '@elysiajs/jwt'
-import cookie from '@elysiajs/cookie'
+import adminJWTSchema from '../schema/adminJWT.schema'
+import AdminDTOs from './dto/adminDTOs'
 
 const adminRouter = new Elysia({ name: 'Admin', prefix: '/admin' })
-  .use(cookie())
   .use(
     jwt({
       name: 'JWT',
       secret: process.env.JWT_SECRET ?? 'secret',
-      exp: '15m'
+      exp: '24h',
+      schema: adminJWTSchema
     })
+  )
+  .post(
+    '/cookieok',
+    async ({ JWT, cookie: { token } }) => {
+      const verifiedToken = await JWT.verify(token.value)
+      console.log(token.value, verifiedToken)
+
+      if (verifiedToken) return { message: 'Cookie is valid' }
+
+      return error(400, { error: 'Invalid argument' })
+    },
+    AdminDTOs.cookieOk
   )
   .post(
     '/login',
     async ({ body: { email, password }, JWT, cookie: { token } }) =>
       await Admin.login(email, password)
-        .then(async (res) => {
-          console.log(token)
-
+        .then(async () => {
           const signedToken = await JWT.sign({
             email,
             admin: 'true'
           })
-          token.value = signedToken
-          token.httpOnly = true
+          token.set({
+            value: signedToken,
+            httpOnly: true,
+            expires: new Date(Date.now() + 60 * 60 * 24 * 1000)
+          })
+
           return { message: 'Logged in' }
         })
         .catch((e) => error(401, { error: e.message })),
-    {
-      body: t.Object({
-        email: t.String({ format: 'email' }),
-        password: t.String()
-      })
-    }
+    AdminDTOs.login
   )
   .onBeforeHandle(async ({ JWT, cookie: { token }, error }) => {
     const resolved = await JWT.verify(token.value)
-    if (!resolved) return error(401, { error: 'Unauthorized' })
-    if (!resolved.admin) return error(403, { error: 'Forbidden' })
     console.log(resolved)
+
+    if (!resolved) {
+      token.remove()
+      return error(401, { error: 'Unauthorized' })
+    }
   })
   .group('/media', (app) =>
     app.get(
@@ -87,17 +99,8 @@ const adminRouter = new Elysia({ name: 'Admin', prefix: '/admin' })
 
           return country
         },
-        {
-          params: t.Object({ id: t.String() }),
-          detail: {
-            tags: ['Countries'],
-            responses: {
-              200: { description: 'Country deleted' },
-              400: { description: 'Invalid argument' },
-              500: { description: 'Internal server error' }
-            }
-          }
-        }
+
+        AdminDTOs.deleteCountry
       )
 
       .patch(
@@ -112,34 +115,7 @@ const adminRouter = new Elysia({ name: 'Admin', prefix: '/admin' })
             .then((country) => country)
             .catch((e) => error(500, { error: e.message }))
         },
-        {
-          params: t.Object({
-            id: t.String({ minLength: 24, maxLength: 24 })
-          }),
-          body: updateCountryDTO,
-          type: 'json',
-          detail: {
-            tags: ['Countries'],
-            responses: {
-              200: {
-                description: 'Country updated',
-                content: {
-                  'application/json': {
-                    schema: {
-                      type: 'object',
-                      properties: {
-                        id: { type: 'string' },
-                        name: { type: 'string' }
-                      }
-                    }
-                  }
-                }
-              },
-              400: { description: 'Invalid argument' },
-              500: { description: 'Internal server error' }
-            }
-          }
-        }
+        AdminDTOs.patchCountry
       )
   )
 

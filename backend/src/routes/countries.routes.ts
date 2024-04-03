@@ -1,5 +1,6 @@
 import { Elysia } from 'elysia'
 import Countries from '../db/Countries'
+import CountriesDTOs from './dto/countriesDTOs'
 
 const countriesRouter = new Elysia({
   name: 'Countries',
@@ -12,15 +13,7 @@ const countriesRouter = new Elysia({
       .catch((e) =>
         error(500, { error: e.message ?? 'Internal server error' })
       ),
-  {
-    detail: {
-      tags: ['Countries'],
-      responses: {
-        200: { description: 'Countries list' },
-        500: { description: 'Internal server error' }
-      }
-    }
-  }
+  CountriesDTOs.getCountries
 )
 
 export type CountriesRouter = typeof countriesRouter

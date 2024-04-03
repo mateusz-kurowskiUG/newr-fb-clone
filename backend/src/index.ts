@@ -5,7 +5,6 @@ import apiErrorHandler from './handlers/api-error-handler'
 import swagger from '@elysiajs/swagger'
 import cors from '@elysiajs/cors'
 import authRouter from './routes/auth.routes'
-import cron from '@elysiajs/cron'
 
 const app = new Elysia({ prefix: '/api' })
   .use(
@@ -26,15 +25,6 @@ const app = new Elysia({ prefix: '/api' })
           { name: 'Auth', description: 'Auth operations' },
           { name: 'Countries', description: 'Countries operations' }
         ]
-      }
-    })
-  )
-  .use(
-    cron({
-      name: 'countriesLoad',
-      pattern: '*/60 * * * * *',
-      run () {
-        console.log('Deleting banned users')
       }
     })
   )
