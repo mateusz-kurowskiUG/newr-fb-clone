@@ -1,22 +1,23 @@
 import { t } from 'elysia'
-import loginDTO from './loginDTO'
 import updateCountryDTO from './updateCountryDTO'
+import loginDTO from './loginDTO'
+import CountriesDTOs from './countriesDTOs'
 
 const tags = ['Admin']
 
 const cookie = t.Cookie({ token: t.String() })
 
 const cookieOk = {
+  cookie,
   detail: {
-    tags: ['Admin'],
     description: 'Check if cookie with JWT is valid',
+    tags,
     responses: {
       200: { description: 'Cookie is valid' },
-      400: { description: 'Invalid argument' },
-      500: { description: 'Internal server error' }
+      400: { description: 'Bad Request' }
+      // 500: { description: 'Internal server error' }
     }
-  },
-  cookie
+  }
 }
 
 const login = {
@@ -36,7 +37,7 @@ const deleteCountry = {
     tags,
     responses: {
       200: { description: 'Country deleted' },
-      400: { description: 'Invalid argument' },
+      400: { description: 'Bad Request' },
       500: { description: 'Internal server error' }
     }
   },
@@ -66,16 +67,18 @@ const patchCountry = {
           }
         }
       },
-      400: { description: 'Invalid argument' },
+      400: { description: 'Bad Request' },
       500: { description: 'Internal server error' }
     }
   },
   cookie
 }
+const { getCountries } = CountriesDTOs
 const AdminDTOs = {
   cookieOk,
   login,
   deleteCountry,
-  patchCountry
+  patchCountry,
+  getCountries
 }
 export default AdminDTOs

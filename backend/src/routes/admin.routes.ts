@@ -8,6 +8,7 @@ import Admin from '../db/Admin'
 import jwt from '@elysiajs/jwt'
 import adminJWTSchema from '../schema/adminJWT.schema'
 import AdminDTOs from './dto/adminDTOs'
+import CountriesDTOs from './dto/countriesDTOs'
 
 const adminRouter = new Elysia({ name: 'Admin', prefix: '/admin' })
   .use(
@@ -22,10 +23,8 @@ const adminRouter = new Elysia({ name: 'Admin', prefix: '/admin' })
     '/cookieok',
     async ({ JWT, cookie: { token } }) => {
       const verifiedToken = await JWT.verify(token.value)
-      console.log(token.value, verifiedToken)
-
+      console.log(token.value, verifiedToken) // TODO: delete this
       if (verifiedToken) return { message: 'Cookie is valid' }
-
       return error(400, { error: 'Invalid argument' })
     },
     AdminDTOs.cookieOk
@@ -51,6 +50,7 @@ const adminRouter = new Elysia({ name: 'Admin', prefix: '/admin' })
     AdminDTOs.login
   )
   .onBeforeHandle(async ({ JWT, cookie: { token }, error }) => {
+    if (typeof token.value !== 'string') return error(400, 'Bad Request')
     const resolved = await JWT.verify(token.value)
     console.log(resolved)
 
@@ -74,13 +74,21 @@ const adminRouter = new Elysia({ name: 'Admin', prefix: '/admin' })
     app
       .get(
         '/',
-        async ({ error }) =>
-          await prisma.country
-            .findMany()
+        async ({ error, query: { page, pageSize = 10 } }) => {
+          const results = !page
+            ? prisma.country.findMany()
+            : prisma.country.findMany({
+              take: pageSize,
+              skip: (page - 1) * pageSize
+            })
+
+          return await results
             .then((countries) => countries)
             .catch((e) =>
               error(500, { error: e.message ?? 'Internal server error' })
             )
+        },
+        AdminDTOs.getCountries
       )
       .delete(
         '/delete/:id',
