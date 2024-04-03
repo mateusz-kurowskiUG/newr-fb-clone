@@ -15,28 +15,27 @@ import { z } from "zod";
 import loginFormSchema from "../schema/login-form-schema";
 
 import adminAxios from "../../axios/admin-axios";
-import useLoginStore from "../../stores/login-store";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@radix-ui/react-toast";
 import { Toaster } from "@/components/ui/toaster";
+import { useRouter } from "next/navigation";
+
 // interface message with type
 function LoginForm() {
   const form = useLoginForm();
   const { toast } = useToast();
-  const { setLoggedIn } = useLoginStore();
-
+  const router = useRouter();
   const onSubmit = async (values: z.infer<typeof loginFormSchema>) => {
     await adminAxios
-      .post("login/", values)
+      .post("/login/", values)
       .then(() => {
         toast({
           variant: "success",
           title: "Login successful.",
           description: "You will be redirected soon.",
         });
-        localStorage.setItem("loggedIn", "true");
         setTimeout(() => {
-          setLoggedIn(true);
+          router.push("/admin");
         }, 2000);
       })
       .catch((e) => {

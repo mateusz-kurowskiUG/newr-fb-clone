@@ -8,7 +8,6 @@ import Admin from '../db/Admin'
 import jwt from '@elysiajs/jwt'
 import adminJWTSchema from '../schema/adminJWT.schema'
 import AdminDTOs from './dto/adminDTOs'
-import CountriesDTOs from './dto/countriesDTOs'
 
 const adminRouter = new Elysia({ name: 'Admin', prefix: '/admin' })
   .use(
@@ -22,6 +21,8 @@ const adminRouter = new Elysia({ name: 'Admin', prefix: '/admin' })
   .post(
     '/cookieok',
     async ({ JWT, cookie: { token } }) => {
+      console.log(token)
+
       const verifiedToken = await JWT.verify(token.value)
       console.log(token.value, verifiedToken) // TODO: delete this
       if (verifiedToken) return { message: 'Cookie is valid' }
@@ -38,24 +39,28 @@ const adminRouter = new Elysia({ name: 'Admin', prefix: '/admin' })
             email,
             admin: 'true'
           })
-          token.set({
-            value: signedToken,
-            httpOnly: true,
-            expires: new Date(Date.now() + 60 * 60 * 24 * 1000)
-          })
-
+          token.value = signedToken
+          token.httpOnly = true
+          token.expires = new Date(Date.now() + 60 * 60 * 24 * 1000)
+          token.path = '/'
+          token.secure = true
           return { message: 'Logged in' }
         })
         .catch((e) => error(401, { error: e.message })),
     AdminDTOs.login
   )
+  .post('logout', async ({ cookie: { token } }) => {
+    token.set({ value: '', expires: new Date(0), path: '/' })
+    console.log(token)
+
+    return { message: 'Logged out' }
+  })
   .onBeforeHandle(async ({ JWT, cookie: { token }, error }) => {
     if (typeof token.value !== 'string') return error(400, 'Bad Request')
     const resolved = await JWT.verify(token.value)
     console.log(resolved)
-
     if (!resolved) {
-      token.remove()
+      // token.remove()
       return error(401, { error: 'Unauthorized' })
     }
   })

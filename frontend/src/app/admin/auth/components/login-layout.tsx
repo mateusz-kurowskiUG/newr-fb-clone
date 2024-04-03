@@ -1,16 +1,22 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import useLoginStore from "../../stores/login-store";
 import { useRouter } from "next/navigation";
 import LoginForm from "./login-form";
+import useCheckAuth from "../../hooks/useCheckAuth";
 
 function LoginLayout() {
-  const { loggedIn } = useLoginStore();
+  const { setLoggedIn } = useLoginStore();
   const router = useRouter();
-  useEffect(() => {
-    if (loggedIn || localStorage.getItem("loggedIn") === "true")
-      router.push("/admin");
-  }, []);
+  const { data, isPending } = useCheckAuth();
+  if (isPending) return <div>Loading...</div>;
+
+  if (data) {
+    setLoggedIn(true);
+    localStorage.setItem("loggedIn", "true");
+    router.push("/admin");
+    return;
+  }
 
   return (
     <>
