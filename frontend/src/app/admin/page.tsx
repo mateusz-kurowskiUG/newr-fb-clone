@@ -1,7 +1,13 @@
+"use client";
 import React from "react";
-
-function page() {
-  return 1;
+import AdminLayout from "./components/admin-layout";
+import LoggedInGuard from "./components/logged-in-guard";
+function Page() {
+  return (
+    <LoggedInGuard>
+      <AdminLayout />;
+    </LoggedInGuard>
+  );
 }
 
-export default page;
+export default Page;

@@ -1,8 +1,8 @@
 import Elysia from 'elysia'
 import registerDTO from './dto/registerDTO'
-import loginDTO from './dto/loginDTO'
 import Auth from '../db/Auth'
 import Countries from '../db/Countries'
+import loginDTO from './dto/loginDTO'
 // TODO: ADD RESPONSES TO VALIDATION
 const authRouter = new Elysia({ prefix: '/auth', name: 'Auth' }).onError(
   ({ code, error, set }) => {
