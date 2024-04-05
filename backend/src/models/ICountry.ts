@@ -1,3 +1,5 @@
+// type generator ?
+
 export interface ICountry {
   id: string
   flagEmoji: string | null

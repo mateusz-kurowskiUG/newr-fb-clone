@@ -41,12 +41,19 @@ const updateContry = async (id: string, data: ICountry): Promise<ICountry> =>
       if (e.code === 'P2025') throw new Error(DBMessage.DOES_NOT_EXIST)
       throw new Error(DBMessage.NOT_AVAILABLE)
     })
-
+const addCountry = async (data: ICountry): Promise<ICountry> =>
+  await prisma.country
+    .create({ data })
+    .then((res) => res)
+    .catch((e) => {
+      throw new Error(DBMessage.NOT_AVAILABLE)
+    })
 export const Countries = {
   getAllCountries,
   deleteCountry,
   getContryById,
   countryExists,
-  updateContry
+  updateContry,
+  addCountry
 }
 export default Countries
