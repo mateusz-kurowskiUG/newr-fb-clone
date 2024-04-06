@@ -15,6 +15,16 @@ const mockCountry: ICountry = {
   phoneCodeRoot: 'mock code'
 }
 
+const mockCountry2: ICountry = {
+  id: cuid2.createId(),
+  flagAlt: 'mock alt2',
+  flagEmoji: 'mock emoji2',
+  flagSvg: 'mock svg2',
+  nameEng: 'mock name2',
+  namePol: 'mock name2',
+  phoneCodeRoot: 'mock code2'
+}
+
 beforeEach(async () => {
   await Countries.addCountry(mockCountry)
 })
@@ -47,13 +57,19 @@ describe('Countries namespace', () => {
   })
   test('should delete a country', async () => {
     // add new country
-    const mockCountry2: ICountry = { ...mockCountry, id: cuid2.createId() }
     await Countries.addCountry(mockCountry2)
-    // delete country
+    // delete this country
     const deletedCountry = await Countries.deleteCountry(mockCountry2.id)
     expect(deletedCountry).toEqual(mockCountry2)
     // check if has been deleted
     const exists = await Countries.countryExists(mockCountry2.id)
     expect(exists).toBeFalse()
+  })
+
+  test('should update a country', async () => {
+    const { id: _, ...newData } = mockCountry2
+    const updated = await Countries.updateContry(mockCountry.id, newData)
+    expect(isCountry(updated)).toBeTrue()
+    expect(updated).toEqual({ id: mockCountry.id, ...newData })
   })
 })

@@ -1,6 +1,6 @@
 import prisma from '../connect'
 import DBMessage from '../enums/DBMessage'
-import type ICountry from '../models/ICountry'
+import { type ICountry } from '../models/ICountry'
 
 const getAllCountries = async (): Promise<ICountry[]> =>
   await prisma.country
@@ -33,7 +33,10 @@ const deleteCountry = async (id: string): Promise<ICountry | Error> =>
       throw new Error(DBMessage.NOT_AVAILABLE)
     })
 
-const updateContry = async (id: string, data: ICountry): Promise<ICountry> =>
+const updateContry = async (
+  id: string,
+  data: Omit<ICountry, 'id'>
+): Promise<ICountry> =>
   await prisma.country
     .update({ where: { id }, data })
     .then((res) => res)
