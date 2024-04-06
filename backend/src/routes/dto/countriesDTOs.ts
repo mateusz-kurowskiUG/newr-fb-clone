@@ -8,10 +8,14 @@ const getCountries = {
       500: { description: 'Internal server error' }
     }
   },
-  query: t.Object({
-    page: t.Optional(t.Numeric({ minimum: 1, description: 'no. page' })),
-    pageSize: t.Optional(t.Numeric({ minimum: 1, description: 'no. of items' }))
-  })
+  query: t.Optional(
+    t.Object({
+      page: t.Optional(t.Numeric({ minimum: 1, description: 'no. page' })),
+      pageSize: t.Optional(
+        t.Numeric({ minimum: 1, description: 'no. of items' })
+      )
+    })
+  )
 }
 const CountriesDTOs = {
   getCountries

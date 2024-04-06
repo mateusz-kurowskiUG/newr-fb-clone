@@ -10,6 +10,17 @@ const getAllCountries = async (): Promise<ICountry[]> =>
       throw new Error(DBMessage.NOT_AVAILABLE)
     })
 
+const getCountriesPaginated = async (
+  pageNumber: number,
+  pageSize: number
+): Promise<ICountry[]> =>
+  await prisma.country
+    .findMany({ take: n })
+    .then((res) => res)
+    .catch((e) => {
+      throw new Error(DBMessage.NOT_AVAILABLE)
+    })
+
 const getContryById = async (id: string): Promise<ICountry> =>
   await prisma.country
     .findUniqueOrThrow({ where: { id } })
@@ -57,6 +68,7 @@ export const Countries = {
   getContryById,
   countryExists,
   updateContry,
-  addCountry
+  addCountry,
+  getCountriesPaginated
 }
 export default Countries
