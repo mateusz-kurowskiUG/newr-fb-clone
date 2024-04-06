@@ -12,15 +12,19 @@ const getAllCountries = async (): Promise<ICountry[]> =>
 
 const getCountriesPaginated = async (
   pageNumber: number,
-  pageSize: number
-): Promise<ICountry[]> =>
-  await prisma.country
-    .findMany({ take: n })
+  pageSize: number = 10
+): Promise<ICountry[]> => {
+  if (pageNumber <= 0 || pageSize <= 0) {
+    throw new Error(DBMessage.INVALID_ARGUMENT)
+  }
+
+  return await prisma.country
+    .findMany({ take: pageSize, skip: pageNumber - 1 * pageSize })
     .then((res) => res)
     .catch((e) => {
       throw new Error(DBMessage.NOT_AVAILABLE)
     })
-
+}
 const getContryById = async (id: string): Promise<ICountry> =>
   await prisma.country
     .findUniqueOrThrow({ where: { id } })
