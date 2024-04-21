@@ -1,0 +1,23 @@
+_id: req_cebc92a239f9416bb2c89823325757e4
+type: Request
+parentId: wrk_4a7a4dd118424296a01df72d5a07851f
+modified: 1711551781771
+created: 1711551781771
+url: http://localhost:3000/countries/[1,2,3]
+name: Delete many countries
+description: ""
+method: DELETE
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1710818594812
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

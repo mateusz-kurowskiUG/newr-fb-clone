@@ -1,0 +1,28 @@
+_id: req_ed2bc40993cb466cb9c8b28b6eec5270
+type: Request
+parentId: fld_11c30d177e7e4f76933ba2e1797b879c
+modified: 1712162392880
+created: 1712002135062
+url: http://localhost:5000/api/admin/media
+name: Admin Media
+description: ""
+method: GET
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication:
+  type: apikey
+  disabled: true
+  key: token
+  value: aaaaaaaaaaaaaaa
+  addTo: cookie
+metaSortKey: -1712162386392
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

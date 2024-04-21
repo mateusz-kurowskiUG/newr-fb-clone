@@ -1,0 +1,23 @@
+_id: req_b82b190df7e8430284b9c18ebfed4d1e
+type: Request
+parentId: wrk_4a7a4dd118424296a01df72d5a07851f
+modified: 1711576697386
+created: 1711551798419
+url: http://localhost:5000/api/auth/login
+name: Login User
+description: ""
+method: POST
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1711551798419
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

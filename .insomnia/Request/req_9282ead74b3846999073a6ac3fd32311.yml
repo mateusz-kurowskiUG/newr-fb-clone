@@ -1,0 +1,23 @@
+_id: req_9282ead74b3846999073a6ac3fd32311
+type: Request
+parentId: fld_11c30d177e7e4f76933ba2e1797b879c
+modified: 1712175195919
+created: 1712142871565
+url: http://localhost:5000/api/admin/cookieok
+name: Admin Cookie ok
+description: ""
+method: POST
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1712162386542
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

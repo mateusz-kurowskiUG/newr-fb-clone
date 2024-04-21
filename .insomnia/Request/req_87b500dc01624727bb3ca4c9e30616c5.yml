@@ -1,0 +1,23 @@
+_id: req_87b500dc01624727bb3ca4c9e30616c5
+type: Request
+parentId: fld_11c30d177e7e4f76933ba2e1797b879c
+modified: 1712162651821
+created: 1712162345309
+url: http://localhost:5000/api/admin/country
+name: Admin all countries
+description: ""
+method: GET
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1712162386242
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

@@ -1,0 +1,33 @@
+_id: req_245dbabfa20148349f695afbde9caf4f
+type: Request
+parentId: wrk_4a7a4dd118424296a01df72d5a07851f
+modified: 1711582857063
+created: 1711551784319
+url: http://localhost:5000/api/auth/register
+name: Register User
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"email":"admin@admin.cm",
+    	"password":"Admin123!",
+    	"country_id":"pffi9mym6c7a52w7nqimn81o",
+    	"date_of_birth":"2011-02-02"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1711551798519
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

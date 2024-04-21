@@ -1,0 +1,23 @@
+_id: req_798643f5c95a46078a280db4d42de932
+type: Request
+parentId: fld_11c30d177e7e4f76933ba2e1797b879c
+modified: 1712179386937
+created: 1712179345952
+url: http://localhost:5000/api/admin/logout
+name: Admin logout
+description: ""
+method: POST
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1712179345952
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

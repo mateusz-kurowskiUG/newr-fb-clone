@@ -1,0 +1,31 @@
+_id: req_63047a6f986d4228ab228f5d9655905a
+type: Request
+parentId: fld_11c30d177e7e4f76933ba2e1797b879c
+modified: 1712163757337
+created: 1712162654366
+url: http://localhost:5000/api/admin/country
+name: Admin countries paginated
+description: ""
+method: GET
+body: {}
+parameters:
+  - id: pair_d4e27564fd2a4e2c8469b7e41c2e61ee
+    name: page
+    value: "5"
+    description: ""
+  - id: pair_09d279b3bc974f84ad234d5ae095b330
+    name: pageSize
+    value: "10"
+    description: ""
+headers:
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1712162386142
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

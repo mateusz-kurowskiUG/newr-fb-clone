@@ -1,0 +1,23 @@
+_id: req_9b96b3d2a6e649c0bcba986854795592
+type: Request
+parentId: wrk_4a7a4dd118424296a01df72d5a07851f
+modified: 1711551754505
+created: 1711294667092
+url: http://localhost:5000/api/countries
+name: All countries with filtering columns
+description: ""
+method: GET
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1711294667092
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
